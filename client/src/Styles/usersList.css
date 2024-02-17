@@ -1,0 +1,45 @@
+.containerUsers{
+    margin-top: 60px;
+    
+    margin-left: 250px;
+    padding: 30px;
+    /* transition: all 0.3s ease; */
+  }
+
+  
+
+
+  .tableUsers {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .tableUsers th, .tableUsers td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+
+  
+  .tableUsers th {
+    background-color: #004D40;
+    color: #fff;
+  }
+  
+  .tableUsers tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .tableUsers tbody tr:hover {
+    background-color: #ddd;
+  }
+  .actions{
+    width: 10px;
+  }
+ 
+  .deleteIcon{
+    color : rgb(145, 8, 8);
+    
+  }

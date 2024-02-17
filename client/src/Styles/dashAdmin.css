@@ -1,0 +1,49 @@
+.statistics {
+  margin-top: 90px;
+  margin-left: 250px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cds {
+  width: calc(30% - 20px);
+  margin: 10px 20px 20px 20px;
+  height: auto; /* Adjusted to auto to accommodate varying content */
+  background: #fff;
+  /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;*/
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  overflow: hidden; /* Ensure content doesn't overflow */
+  transition: background-color 0.3s;
+}
+
+
+.cds:hover {
+  background: #004D40;
+}
+.cds h1 {
+  padding: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #004D40;
+  transition: color 0.3s;
+}
+
+.cds p {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #004D40;
+  transition: color 0.3s;
+}
+
+.cds:hover h1 {
+  color: #fff; /* Change h1 text color when hovering */
+}
+
+
+.cds:hover p {
+  color: #fff; /* Change p text color when hovering */
+}

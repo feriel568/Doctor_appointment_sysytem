@@ -1,0 +1,67 @@
+/* LoginStyles.css */
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 30px;
+  width: 400px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004D40;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+
+.login-form .inputButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #004D40;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+
+.login-form .error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.fPass{
+  color: #004D40;
+  margin-left: 230px;
+  font-size: 12px;
+  
+  /* border: 1px red solid ; */
+}
