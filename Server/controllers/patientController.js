@@ -22,7 +22,7 @@ exports.register = async function (req, res) {
 
 
         if (existingPatient) {
-            return res.status(409).json({ message: 'User with this username already exists.' });
+            return res.status(409).json({ message: 'Patient already exists.' });
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
          const verificationToken = uuid.v4();
