@@ -1,0 +1,85 @@
+/* LoginStyles.css */
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.loginContainerPt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loginFormPt {
+  background-color: #fff;
+  padding: 50px;
+  height: 430px;
+  width: 400px;
+  border-radius: 5px;
+  /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.loginFormPt h2 {
+  text-align: left;
+  margin-bottom: 20px;
+  color: #004D40;
+  font-weight: bold;
+  position: relative; 
+  
+}
+
+.loginFormPt h2::after {
+  content: ""; 
+  display: block; 
+  position: absolute; 
+  width: 40px; 
+  height: 2px; 
+  background-color: #004D40; 
+  bottom: 2; 
+  left: 0;
+}
+.loginFormPt input {
+    margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-color :#004D40 ;
+}
+
+
+.loginFormPt .inputButtonPt {
+    width: 50%;
+    padding: 5px;
+    background-color: #004D40;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+
+.loginFormPt .error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.fPass{
+  color: #004D40;
+  margin-left: 180px;
+  font-size: 12px;
+  
+}
