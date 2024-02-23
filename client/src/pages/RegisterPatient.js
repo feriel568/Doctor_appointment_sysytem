@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import "../Styles/registerPatient.css";
 
 const RegisterPatient = () => {
@@ -57,6 +59,9 @@ const RegisterPatient = () => {
             value="Sign Up"
           />
         </div>
+        <Link to="/login_patient">
+      <p className="crAcc">Already have an account?SignIn</p>
+      </Link>
       </div>
     </div>
   );
