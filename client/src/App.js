@@ -9,6 +9,7 @@ import UpdateDoctor from './pages/UpdateDoctor'
 import ListUsers from './pages/ListUsers';
 import LandingPagePatient from './pages/LandingPagePatient';
 import LoginPatient from './pages/LoginPatient';
+import RagisterPatient from './pages/RegisterPatient'
 import './App.css';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/update_doctor/:doctorId" element={<UpdateDoctor />} />
         <Route path="/users_list" element={<ListUsers />} />
         <Route path="/login_patient" element={<LoginPatient />} />
+        <Route path="/register" element={<RagisterPatient />} />
 
 
         

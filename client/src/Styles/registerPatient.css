@@ -10,24 +10,25 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-.loginContainerPt {
+.signUpContainerPt {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-.loginFormPt {
+.signUpFormPt {
+   
   background-color: #fff;
   padding: 50px;
-  height: 430px;
-  width: 400px;
+  /* height: 430px; */
+  /* width: 400px; */
   border-radius: 5px;
   /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; */
   font-family: 'Montserrat', sans-serif;
 }
 
-.loginFormPt h2 {
+.signUpFormPt h2 {
   text-align: left;
   margin-bottom: 20px;
   color: #004D40;
@@ -36,17 +37,23 @@ body {
   
 }
 
-.loginFormPt h2::after {
+.signUpFormPt h2::after {
   content: ""; 
   display: block; 
   position: absolute; 
-  width: 40px; 
+  width: 80px; 
   height: 2px; 
   background-color: #004D40; 
   bottom: 2; 
   left: 0;
 }
-.loginFormPt input {
+
+.signUpFormPt .inputRowPt {
+    display: flex;
+    justify-content: space-around;
+  }
+.signUpFormPt input,
+.signUpFormPt select {
     margin-top: 20px;
   width: 100%;
   padding: 10px;
@@ -60,32 +67,27 @@ body {
 }
 
 
-.loginFormPt .inputButtonPt {
-    width: 50%;
+.signUpFormPt .inputButtonPt {
+    width: 40%;
     padding: 5px;
     background-color: #004D40;
     color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    font-size: 20px;
   }
   
 
-.loginFormPt .error-message {
+.signUpFormPt .error-message {
   color: red;
   text-align: center;
   margin-bottom: 15px;
 }
 
-.fPass{
+/* .fPass{
   color: #004D40;
   margin-left: 180px;
   font-size: 12px;
   
-}
-
-.crAcc{
-  font-size: 10px;
-  color: black;
-  font-weight: bold;
-}
+} */
