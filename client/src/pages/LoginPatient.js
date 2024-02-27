@@ -1,26 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React , {useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import '../Styles/loginPatient.css'
 
 const LoginPatient = () => {
+
+  const [username , setUsername]=useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handelLogin = async () =>{
+    try{
+      if(!username || !password) {
+        setError('username and password are required.')
+      }
+      const response = await axios.post('http://localhost:5000/patient/login', {
+        username,
+        password,
+      });
+
+      
+      const { token, patient } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(patient));
+      localStorage.setItem('token', token);
+      navigate('/dash_patient');
+    }catch (error) {
+      console.error(error);
+      setError('Invalid email or password.');
+  }
+}
   return (
     <div className="loginContainerPt">
     <div className="loginFormPt">
       <h2>Login</h2>
       <div className="inputContainerPt">
         <input
-          // value={username}
+          value={username}
           placeholder="Enter your username here"
-          // onChange={(ev) => setUsername(ev.target.value)}
+          onChange={(ev) => setUsername(ev.target.value)}
           className="inputBox"
         />
       </div>
       <div className="inputContainerPt">
         <input
           type="password"
-          // value={password}
+          value={password}
           placeholder="Enter your password here"
-          // onChange={(ev) => setPassword(ev.target.value)}
+          onChange={(ev) => setPassword(ev.target.value)}
           className="inputBox"
         />
         <div className='fPass'>
@@ -28,11 +56,11 @@ const LoginPatient = () => {
          </div>
       </div>
       <div className="inputContainerPt">
-        {/* <p className="error-message">{error}</p> */}
+        <p className="error-message">{error}</p>
         <input
           className="inputButtonPt"
           type="button"
-          // onClick={handleLogin}
+          onClick={handelLogin}
           value="Login"
         />
       </div>
@@ -43,5 +71,6 @@ const LoginPatient = () => {
   </div>
   );
 };
+
 
 export default LoginPatient;

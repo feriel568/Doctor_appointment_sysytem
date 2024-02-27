@@ -2,7 +2,7 @@ body, html {
     margin: 0;
     padding: 0;
     overflow-x: hidden; 
-    /* overflow-y: hidden;  */
+   
     
 }
 
@@ -21,18 +21,21 @@ body, html {
     font-weight: bold;
 }
 
-ul {
+/* ul {
     list-style: none;
     display: flex;
     padding-top: 10px;
-}
+} */
 
-ul li {
+.homeNav li {
     margin: 0 20px; 
 }
 
 .homeNav {
     margin-left: 70px;
+    list-style: none;
+    display: flex;
+    padding-top: 10px;
 }
 
 .landingPageView {

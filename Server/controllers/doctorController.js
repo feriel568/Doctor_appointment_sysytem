@@ -122,9 +122,15 @@ exports.singnInDoctor = async function(req,res){
             return res.status(401).json({ message: 'Invalid password.' });
         }
 
+        const userDetails = {
+            email: doctor.email,  
+            role: doctor.role,
+            lastName: doctor.lastName,
+            firstName: doctor.firstName
+          };
         const token = jwt.sign({ username: doctor.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        return res.json({ token });
+        return res.json({ token, user :userDetails });
 
     }catch (err) {
        

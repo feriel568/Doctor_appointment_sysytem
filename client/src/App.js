@@ -10,6 +10,9 @@ import ListUsers from './pages/ListUsers';
 import LandingPagePatient from './pages/LandingPagePatient';
 import LoginPatient from './pages/LoginPatient';
 import RagisterPatient from './pages/RegisterPatient'
+import DashPatient from './pages/DashPatient'
+import LoginDoctor from './pages/LoginDoctor';
+import DashDoctor from './pages/DashDoctor'
 import './App.css';
 
 const App = () => {
@@ -25,6 +28,9 @@ const App = () => {
         <Route path="/users_list" element={<ListUsers />} />
         <Route path="/login_patient" element={<LoginPatient />} />
         <Route path="/register" element={<RagisterPatient />} />
+        <Route path='/dash_patient' element={<DashPatient />} />
+        <Route path='/login_doc' element={<LoginDoctor />} />
+        <Route path='/dash_doc' element={<DashDoctor />} />
 
 
         

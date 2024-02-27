@@ -87,9 +87,3 @@ export default Login;
 
 
 
-// address: "",
-//         phone: "",
-//         fee: "",
-//         specialization: "",
-//         startTime: "",
-//         endTime: "",
