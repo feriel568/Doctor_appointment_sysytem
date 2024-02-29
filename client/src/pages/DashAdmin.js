@@ -11,6 +11,7 @@ export const DashAdmin = () => {
   const [totalAdmins, setTotalAdmins] = useState(0);  
   const [totalDoctors, setTotalDoctors] = useState(0); 
   const [totalPatients , setTotalPatients] = useState(0); 
+  const [totalAppointments, setTotalAppointments] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +67,19 @@ export const DashAdmin = () => {
     fetchData();
   } , []);
 
+  useEffect(()=>{
+    const fetchData = async ()=> {
+      try{
+        const res = await axios.get('http://localhost:5000/appointment/all')
+        const totalAppointmentsFromServer = res.data;
+        setTotalAppointments(totalAppointmentsFromServer)
+      }catch(error){
+        console.error('Error fetching data:', error);
+      }
+    }
+    fetchData();
+  } , []);
+
   return (
    
     <div>
@@ -94,7 +108,7 @@ export const DashAdmin = () => {
       </div>
       <div className="cds">
         <h1>Total appointments</h1>
-        <p>50x</p>
+        <p>{totalAppointments}</p>
 
       </div>
 
