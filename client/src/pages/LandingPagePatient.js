@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import '../Styles/landingPage.css';
 import svgDoc from '../images/hero-doctor-27ee9489.svg'
 const LandingPagePatient = () =>{
@@ -11,8 +12,9 @@ const LandingPagePatient = () =>{
                 <li>Features</li>
             </ul>
             <ul className='btnNav'>
-                <li>Sign In</li>
-                <li>Sign Up</li>
+                
+                <li><Link to="/login_patient">Sign In</Link></li>
+                <li><Link to="/register">Sign Up</Link></li>
             </ul>
 
         </nav>

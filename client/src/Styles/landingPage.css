@@ -13,6 +13,7 @@ body, html {
     padding: 10px;
     background-color: #004D40; 
     color: #fff;
+    height: 65px;
 }
 
 .logo {
@@ -21,11 +22,7 @@ body, html {
     font-weight: bold;
 }
 
-/* ul {
-    list-style: none;
-    display: flex;
-    padding-top: 10px;
-} */
+
 
 .homeNav li {
     margin: 0 20px; 
@@ -36,7 +33,35 @@ body, html {
     list-style: none;
     display: flex;
     padding-top: 10px;
+    
 }
+
+.btnNav {
+    list-style: none;
+    display: flex;
+    padding-top: 10px;
+}
+
+.btnNav li {
+    margin: 0 10px; 
+    
+}
+
+.btnNav li {
+    background-color: #ffffff;
+    color:#004D40;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.btnNav li a {
+    text-decoration: none;
+    color :#004D40;
+}
+
 
 .landingPageView {
     background: #004d4016;
@@ -52,13 +77,13 @@ body, html {
 }
 
 .content .cn {
-    font-size: 50px;
+    font-size: 40px;
     color: #004D40;
     font-weight: bold;
 }
 
 .content p {
-    font-size: 25px;
+    font-size: 20px;
     color: black;
     font-weight: bold;
     width: 70%;
@@ -72,10 +97,10 @@ body, html {
 }
 
 .fs{
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
     color: #004D40;
 }
 .features {
@@ -89,7 +114,7 @@ body, html {
 
 .cdrFeature {
     /* flex: 0 0 calc(50% - 30px);  */
-   height: 180px;
+   height: 150px;
     box-sizing: border-box;
     text-align: center;
     padding: 20px;
@@ -107,14 +132,14 @@ body, html {
 }
 
 .cdrFeature p {
-    font-size: 20px;
+    font-size: 15px;
     color: black;
 }
 
 footer {
     background: #004D40;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 15px;
     color : #fff;
     padding : 20px;
     text-align: center;
