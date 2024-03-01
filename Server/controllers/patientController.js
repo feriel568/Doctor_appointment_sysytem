@@ -140,6 +140,7 @@ exports.signIn = async function (req, res) {
             return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
         }
         const userDetails = {
+            id : patient._id,
             email: patient.email,  
             role: patient.role,
             lastName: patient.lastName,

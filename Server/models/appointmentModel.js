@@ -11,9 +11,10 @@ const appointmentSchema = mongoose.Schema({
         type : Date,
         required : true
     },
-    isApprouved : {
-        type : Boolean,
-        default : false
+    state : {
+        type : String,
+        enum: ['en_attente', 'confirmed', 'refused'],
+        default: 'en_attente'
     },
     patient : {
         type: mongoose.Schema.Types.ObjectId,

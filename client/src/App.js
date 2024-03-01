@@ -13,6 +13,7 @@ import RagisterPatient from './pages/RegisterPatient'
 import DashPatient from './pages/DashPatient'
 import LoginDoctor from './pages/LoginDoctor';
 import DashDoctor from './pages/DashDoctor'
+import AppointmentsPatient from './pages/AppointmentsPatient'
 import './App.css';
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/dash_patient' element={<DashPatient />} />
         <Route path='/login_doc' element={<LoginDoctor />} />
         <Route path='/dash_doc' element={<DashDoctor />} />
+        <Route path='/appointments_list' element={<AppointmentsPatient />} />
 
 
         
