@@ -224,3 +224,29 @@ exports.getDoctorById = async function(req,res){
 
     }
 }
+
+
+
+
+exports.searchDocByName = async function(req, res) {
+    try {
+        const searchQuery = req.query.search; // Assuming you pass the search parameter in the query string
+
+        // Using a case-insensitive regular expression to search by firstName and lastName
+        const doctors = await Doctor.find({
+            $or: [
+                { firstName: { $regex: new RegExp(searchQuery, 'i') } },
+                { lastName: { $regex: new RegExp(searchQuery, 'i') } }
+            ]
+        });
+
+        if (doctors.length === 0) {
+            return res.status(404).json({ message: 'No doctors found with the given name.' });
+        }
+
+        return res.status(200).json(doctors);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};

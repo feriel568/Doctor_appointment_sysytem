@@ -10,4 +10,5 @@ router.delete('/delete/:id', doctorController.deleteDoctor);
 router.get('/allDoctors', doctorController.getAllDoctors);
 router.get('/totalDoctors', doctorController.getTotalNumberOfDoctors);
 router.get('/getDoctor/:id', doctorController.getDoctorById);
+router.get('/searchDoctor' , doctorController.searchDocByName);
 module.exports = router;

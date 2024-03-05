@@ -29,7 +29,7 @@ return (
         <div className="statistics">
 
         <div className="cds">
-        <h1>Total users</h1>
+        <h1>Total appointments</h1>
         <p>{totalApps}</p>
         </div>
 

@@ -15,7 +15,6 @@ exports.createAppointment = async function (req,res) {
               return res.status(404).json({ message: 'Doctor not found' });
           }
   
-          // Create the appointment
           const appointment = new Appointment({
               day,
               time,
@@ -24,7 +23,6 @@ exports.createAppointment = async function (req,res) {
               doctor: doctor
           });
   
-          // Save the appointment
           await appointment.save();
   
           res.status(201).json(appointment);
@@ -45,7 +43,6 @@ exports.getTotalAppointments = async function (req, res) {
 exports.getAppointments = async function (req, res) {
 
     try {
-        // Assuming you have a way to authenticate the patient and get their ID
         const patientId = req.params.patientId;
 
         // Retrieve appointments for the connected patient

@@ -82,10 +82,10 @@ const SidebarAdmin = () => {
   </li>
   <li>
    
-    {/* <Link to="">
+    <Link to="/pick_appointment">
       <span className="icon"><FontAwesomeIcon icon={faUser} /></span>
-      <span className="title">Schedule</span>
-    </Link> */}
+      <span className="title" style={{ fontSize: '16px' }}>Schedule</span>
+    </Link>
     
   </li>
   <li>
