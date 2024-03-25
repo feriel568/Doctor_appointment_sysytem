@@ -8,4 +8,6 @@ router.post('/patient/:patientId' , appointmentController.createAppointment)
 router.get('/patient/:patientId' , appointmentController.getAppointments)
 router.get('/patient/totalAppointments/:patientId' , appointmentController.getTotalAppointmentsForPatient)
 router.get('/all' , appointmentController.getTotalAppointments)
+
+
 module.exports =  router;

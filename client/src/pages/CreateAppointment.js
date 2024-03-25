@@ -2,73 +2,89 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SidebarPatient from '../components/SidebarPatient';
 import '../Styles/createApp.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useParams } from "react-router-dom";
 
 const CreateAppointment = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [doctors, setDoctors] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState('');
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    specialization: "",
+    startTime: "",
+    endTime: ""
+  });
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [isSearching, setIsSearching] = useState(true);
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const { doctorId } = useParams();
 
   useEffect(() => {
-    if (searchQuery) {
-      handleSearch();
-    }
-  }, [searchQuery]);
-
-  const handleSearch = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`http://localhost:5000/doctor/searchDoctor?search=${searchQuery}`);
-      setDoctors(response.data);
-
-      
-      if (response.data.length > 0) {
-        setSelectedDoctor(response.data[0]._id);
+    const fetchDoctorData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/doctor/getDoctor/${doctorId}`);
+        const doctorData = response.data;
+        setFormData(doctorData);
+      } catch (error) {
+        console.error("Error fetching doctor details:", error);
       }
-    } catch (error) {
-      console.error('Error searching doctors', error);
-    } finally {
-      setLoading(false);
-    }
+    };
+    fetchDoctorData();
+  }, [doctorId]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleCreateAppointment = async () => {
     const storedUserDetails = JSON.parse(localStorage.getItem('user'));
+
     try {
       const selectedDateTime = new Date(`${date}T${time}`);
-      selectedDateTime.setHours(selectedDateTime.getHours() + 1);
-      
+    selectedDateTime.setHours(selectedDateTime.getHours() + 1);
+
+    // Extract the date component from selectedDateTime
+    const selectedDate = selectedDateTime.toISOString().split('T')[0];
+
+    console.log("selectedDate : " + selectedDate);
+    console.log("selectedDateTime : " + selectedDateTime.toISOString());
+     
       const response = await axios.post(`http://localhost:5000/appointment/patient/${storedUserDetails.id}`, {
-        doctor: selectedDoctor,
-        day: selectedDateTime.toISOString(),
+        doctor: formData,
+        day: selectedDate,
         time: selectedDateTime.toISOString(),
       });
+
       
+
+      const message = response.data && response.data.message;
+      if (message === 'The doctor does not work on the selected day.' ||
+          message === 'An appointment already exists for the selected date and time.' ||
+          message === 'The selected time is not available during the doctor\'s working hours.') {
+                
+
+        setSuccessMessage(message);
+        setPopupVisible(true);
+        console.log(isPopupVisible)
+      } else {
+        
+        setSuccessMessage('Appointment created successfully!');
+        setPopupVisible(true);
+      }
       
-      setSuccessMessage('Appointment created successfully!');
-      
-     
-      setPopupVisible(true);
     } catch (error) {
       console.error('Error creating appointment:', error);
     }
   };
+  
+  
+
+
+
 
   const closePopup = () => {
-    
     setPopupVisible(false);
     setSuccessMessage(null);
-  };
-
-  const toggleSearchSelect = () => {
-    setIsSearching(!isSearching);
   };
 
   return (
@@ -83,36 +99,15 @@ const CreateAppointment = () => {
             </div>
           </div>
         )}
+
         <div className="doctorInput">
           <label className='lb'>Doctor</label>
-         
-          {isSearching ? (
-            <input
-              type="search"
-              placeholder="Find a doctor"
-              className="doctorSearch"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          ) : (
-            <select
-              className="doctorDropdown"
-              value={selectedDoctor}
-              onChange={(e) => setSelectedDoctor(e.target.value)}
-            >
-              <option value="" disabled>Select a doctor</option>
-              {doctors.map((doctor) => (
-                <option key={doctor._id} value={doctor._id}>
-                  {doctor.firstName} {doctor.lastName}
-                </option>
-              ))}
-            </select>
-          )}
-
-          {/* Toggle button */}
-          <button className='searchIc' onClick={toggleSearchSelect}>
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
+          <input
+            type="text"
+            onChange={handleChange}
+            className="datePicker"
+            value={`Dr. ${formData.firstName} ${formData.lastName}`}
+          />
         </div>
 
         <div className="dateInput">
@@ -138,9 +133,13 @@ const CreateAppointment = () => {
         </div>
 
         <div className="btnInput">
-          <button type="submit" className='btnApp' onClick={handleCreateAppointment}>
-            Pick appointment
-          </button>
+         
+            <button type="submit" className='btnApp' onClick={handleCreateAppointment}>
+              Pick Appointment
+            </button> 
+          
+           
+         
         </div>
       </div>
     </div>

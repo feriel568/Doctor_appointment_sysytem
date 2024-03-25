@@ -1,0 +1,68 @@
+.docsC {
+    margin-top: 90px;
+    margin-left: 250px;
+    /* border: 1px solid red; */
+}
+
+.sr1 {
+    margin-bottom: 20px;
+}
+
+.dC {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.infoDoc {
+    width: calc(33.33% - 20px); 
+    margin: 10px;
+    height: auto;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
+
+.infoDoc h3 {
+    font-size: 18px; 
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: 30px;
+    color: #004D40; 
+    text-transform: uppercase;
+   
+}
+
+.infoDoc p {
+    font-size: 15px; 
+    margin-left: 30px;
+    margin-top: 2px;
+    /* font-weight: bold; */
+    margin-bottom: 0;
+}
+
+
+.sBtn1{
+    background: #004D40;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    margin-left: 10px;
+    border-radius: 5px;
+    height: 40px;
+    border: none;
+  }
+
+  .pick {
+    background: #004D40;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    margin-left: 55%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 40px;
+    border: none;
+  }

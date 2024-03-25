@@ -12,6 +12,7 @@ Doctor = require('./models/doctorModel');
 
 
 
+
 //Connection to database
 mongoose.connect(process.env.DB_URI)
   .then(() => console.log('DB Connected'))

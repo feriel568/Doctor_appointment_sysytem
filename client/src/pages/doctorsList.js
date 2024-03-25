@@ -8,6 +8,10 @@ import '../Styles/doctorsList.css';
 
 export const DoctorsList = () => {
       const [doctors,setDoctors] = useState([]);
+      const [searchQuery, setSearchQuery] = useState("");
+
+   
+
       useEffect(() => {
         const fetchData = async () => {
           try {
@@ -33,7 +37,14 @@ export const DoctorsList = () => {
           }
         }
       };
-      
+      const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/doctor/searchDoctor?search=${searchQuery}`);
+            setDoctors(response.data);
+        } catch (error) {
+            console.error('Error searching users:', error);
+        }
+    };
   return (
     <div>
       <SidebarAdmin />
@@ -45,7 +56,15 @@ export const DoctorsList = () => {
            + Add doctor 
         </button>
         </Link>
-        
+        <div className="searchContainer">
+                    <input
+                        type="text"
+                        placeholder="Search by name"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button onClick={handleSearch} className="sBtn">Search</button>
+                </div>
         <table className="tableDoc">
           <thead>
             <tr>

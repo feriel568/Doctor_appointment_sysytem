@@ -53,6 +53,10 @@ const doctorSchema = mongoose.Schema({
         type: Boolean,
         default: false
     }, 
+    days : [{
+        type: String,
+        enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    }],
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
     role : { type: String, default : 'doctor'}

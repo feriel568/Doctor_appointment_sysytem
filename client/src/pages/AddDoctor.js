@@ -20,6 +20,7 @@ const AddDoctor = () => {
     specialization: "",
     startTime: "",
     endTime: "",
+    days : []
   });
 
   const [successMessage, setSuccessMessage] = useState(null);
@@ -27,7 +28,22 @@ const AddDoctor = () => {
   const [isPopupVisible, setPopupVisible] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "days") {
+      // Handle days separately since it's an array
+      const updatedDays = [...formData.days];
+      if (e.target.checked) {
+        updatedDays.push(value);
+      } else {
+        const index = updatedDays.indexOf(value);
+        if (index !== -1) {
+          updatedDays.splice(index, 1);
+        }
+      }
+      setFormData({ ...formData, days: updatedDays });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -180,6 +196,27 @@ const AddDoctor = () => {
               onChange={handleChange}
             />
           </div>
+          <div className="formRow">
+  <label>Days of work:</label>
+  <div className="checkboxes">
+    {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+      <div key={day}>
+        <label>
+          <input
+            type="checkbox"
+            name="days"
+            value={day}
+            checked={formData.days.includes(day)}
+            onChange={handleChange}
+          />
+          {day}
+        </label>
+      </div>
+    ))}
+  </div>
+</div>
+
+
 
           <div className="formRow">
             <label htmlFor="startTime">Start time:</label>

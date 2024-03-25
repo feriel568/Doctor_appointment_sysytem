@@ -28,12 +28,15 @@ try{
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const verificationToken = uuid.v4();
-    const newDoctor = new Doctor ({
-        ...req.body,
-        password: hashedPassword,
-        verificationToken: verificationToken,
-        verified : false
-    })
+  
+
+    const newDoctor = new Doctor({
+      ...req.body,
+      password: hashedPassword,
+      verificationToken: verificationToken,
+      verified: false,
+
+    });
 
     const savedDoctor = await newDoctor.save();
     console.log('Saved Doctor:', savedDoctor);
@@ -236,7 +239,8 @@ exports.searchDocByName = async function(req, res) {
         const doctors = await Doctor.find({
             $or: [
                 { firstName: { $regex: new RegExp(searchQuery, 'i') } },
-                { lastName: { $regex: new RegExp(searchQuery, 'i') } }
+                { lastName: { $regex: new RegExp(searchQuery, 'i') } },
+                { specialization: {$regex : new RegExp(searchQuery, 'i')}}
             ]
         });
 

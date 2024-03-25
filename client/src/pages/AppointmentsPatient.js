@@ -48,11 +48,7 @@ const AppointmentsPatient = () => {
         <div>
             <SidebarPatient />
             <div className="containerPat">
-                <Link to="">
-                    <button type="button" className="addApp">
-                        + Add appointment
-                    </button>
-                </Link>
+               
 
               
 

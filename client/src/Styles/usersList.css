@@ -43,3 +43,13 @@
     color : rgb(145, 8, 8);
     
   }
+.sBtn{
+  background: #004D40;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  margin-left: 10px;
+  border-radius: 5px;
+  height: 40px;
+  border: none;
+}

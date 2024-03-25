@@ -76,3 +76,15 @@
   border: none;
   cursor: pointer;
 }
+.checkboxes {
+  display: flex;
+  flex-wrap:wrap;
+  
+  
+}
+.checkboxes label {
+  margin-right: 20px; 
+  flex-basis: 50%;
+  
+  
+}
