@@ -52,3 +52,26 @@
   .deleteIcon{
     color : rgb(145, 8, 8);
   }
+
+  .popup-content .noBtn {
+    background-color:rgb(145, 8, 8) ;
+    margin-left: 10px;
+  }
+
+  .green {
+    color :rgb(26, 106, 41);
+    font-weight: bold;
+    text-transform: uppercase; 
+  }
+
+  .red {
+    color :rgb(145, 8, 8);
+    font-weight: bold;
+    text-transform: uppercase; 
+  }
+
+  .black {
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase; 
+}

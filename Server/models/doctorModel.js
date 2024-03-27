@@ -59,7 +59,12 @@ const doctorSchema = mongoose.Schema({
     }],
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
-    role : { type: String, default : 'doctor'}
+    role : { type: String, default : 'doctor'},
+    patients: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Patient',
+        default : []
+    }]
    
 
 });

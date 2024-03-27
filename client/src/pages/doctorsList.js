@@ -31,7 +31,7 @@ export const DoctorsList = () => {
           setDoctors((prevDoctors) => prevDoctors.filter((doctor) => doctor._id !== id));
           console.log(response.data); // Log the response data
         } catch (error) {
-          console.error('Error deleting document:', error.message); // Log the error message
+          console.error('Error deleting doctor:', error.message); // Log the error message
           if (error.response) {
             console.error('Error response:', error.response.data); // Log the error response
           }

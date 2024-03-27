@@ -60,7 +60,8 @@ const CreateAppointment = () => {
       const message = response.data && response.data.message;
       if (message === 'The doctor does not work on the selected day.' ||
           message === 'An appointment already exists for the selected date and time.' ||
-          message === 'The selected time is not available during the doctor\'s working hours.') {
+          message === 'The selected time is not available during the doctor\'s working hours.' || 
+          message === 'Another appointment is already scheduled within 30 minutes.') {
                 
 
         setSuccessMessage(message);

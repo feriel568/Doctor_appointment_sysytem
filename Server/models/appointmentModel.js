@@ -11,10 +11,10 @@ const appointmentSchema = mongoose.Schema({
         type : Date,
         required : true
     },
-    state : {
+    status : {
         type : String,
-        enum: ['en_attente', 'confirmed', 'refused'],
-        default: 'en_attente'
+        enum: ['pending', 'approved', 'refused'],
+        default: 'pending'
     },
     isAvailable : {
         type: Boolean,
@@ -27,6 +27,10 @@ const appointmentSchema = mongoose.Schema({
     doctor : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Doctor'
+    },
+    isApproved : {
+        type: Boolean,
+        default: false
     }
 })
 

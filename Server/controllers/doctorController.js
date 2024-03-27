@@ -126,6 +126,7 @@ exports.singnInDoctor = async function(req,res){
         }
 
         const userDetails = {
+            id : doctor._id,
             email: doctor.email,  
             role: doctor.role,
             lastName: doctor.lastName,

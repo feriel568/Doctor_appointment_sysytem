@@ -1,5 +1,6 @@
 const Appointment = require('../models/appointmentModel')
 const Doctor = require('../models/doctorModel')
+const Patient = require('../models/patientModel')
 
 
 exports.createAppointment = async function (req, res) {
@@ -51,6 +52,36 @@ exports.createAppointment = async function (req, res) {
             return res.json({ message: 'The selected time is not available during the doctor\'s working hours.' });
         }
 
+
+
+        const thirtyMinutesAfterSelectedTime = new Date(selectedTime);
+thirtyMinutesAfterSelectedTime.setMinutes(thirtyMinutesAfterSelectedTime.getMinutes() + 29);
+
+const existingAppointmentWithinThirtyMinutes = await Appointment.findOne({
+    doctor: doctorObj._id,
+    day: day,
+    time: {
+        $gte: selectedTime,
+        $lt: thirtyMinutesAfterSelectedTime  
+    },
+    isAvailable: false
+});
+
+if (existingAppointmentWithinThirtyMinutes) {
+    return res.json({ message: 'Another appointment is already scheduled within 30 minutes.' });
+}
+
+const patient = await Patient.findById(patientId);
+if (!patient) {
+    return res.status(404).json({ message: 'Patient not found' });
+}
+
+// 7. Store patient information in doctor's patients list
+doctorObj.patients.push(patient);
+
+// 8. Save the updated doctor object
+await doctorObj.save();
+
       // Save the appointment
       const appointment = new Appointment({
           day,
@@ -85,7 +116,7 @@ exports.getAppointments = async function (req, res) {
 
         // Retrieve appointments for the connected patient
         const appointments = await Appointment.find({ patient: patientId })
-            .populate('doctor', 'firstName lastName'); // Populate the doctor details if needed
+            .populate('doctor', 'firstName lastName phone'); // Populate the doctor details if needed
 
         res.status(200).json(appointments);
     } catch (error) {
@@ -104,3 +135,118 @@ exports.getTotalAppointmentsForPatient = async function(req, res) {
 
 
 
+exports.getAppointmentsByDoctor= async function(req, res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const appointments = await Appointment.find({ doctor: doctorId}).populate('patient' , 'firstName lastName email address phone');
+        res.json(appointments);
+    }catch (error) {
+        console.error(error);
+    }
+}
+
+exports.getTotalAppointmentsForDoctor = async function(req, res) {
+    const doctorId = req.params.doctorId;
+
+    const apps = await Appointment.find({ doctor: doctorId})
+    const totalAppPatient = apps.length;
+    res.json(totalAppPatient)
+}
+
+exports.deleteAnAppointment = async function(req, res) {
+
+    try {
+        const appointmentId = req.params.appointmentId;
+    
+        // Check if the appointment exists
+        const appointment = await Appointment.findById(appointmentId);
+        if (!appointment) {
+          return res.status(404).json({ message: 'Appointment not found' });
+        }
+        await Appointment.findByIdAndDelete(appointmentId);
+        res.json({ message: 'Appointment deleted successfully' });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+
+}
+
+
+// exports.getPatientsByDoctor = async function(req, res) {
+//     try {
+//         const doctorId = req.params.doctorId;
+
+//         // Find appointments for the specified doctor
+//         const appointments = await Appointment.find({ doctor: doctorId });
+
+//         // Extract unique patient IDs from the appointments
+//         const patientIds = appointments.map(appointment => appointment.patient);
+
+//         // Fetch patient details based on the extracted patient IDs
+//         const patients = await Patient.find({ _id: { $in: patientIds } });
+
+//         res.json(patients);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// };
+
+
+exports.approveAppointment = async function (req, res) {
+    try {
+        const appointmentId = req.params.appointmentId;
+        const appointment = await Appointment.findById(appointmentId);
+
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        if (appointment.isApproved) {
+            return res.json({ message: 'Appointment is already approved' });
+        }
+
+        if (appointment.status === 'pending') {
+            appointment.isApproved = true;
+            appointment.status = 'approved';
+            await appointment.save(); // Save the changes to the database
+        } else {
+            return res.status(400).json({ message: 'Appointment status is not pending' });
+        }
+
+        return res.json({ message: 'Approved Appointment' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+exports.refuseAppointment = async function (req, res) {
+    try {
+        const appointmentId = req.params.appointmentId;
+        const appointment = await Appointment.findById(appointmentId);
+
+        if (!appointment) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        // if (appointment.isApproved) {
+        //     return res.json({ message: 'Appointment is already approved' });
+        // }
+
+        if (appointment.status === 'pending') {
+            appointment.isApproved = false;
+            appointment.status = 'refused';
+            await appointment.save(); // Save the changes to the database
+        } else {
+            return res.status(400).json({ message: 'Appointment status is not pending' });
+        }
+
+        return res.json({ message: 'Refused Appointment' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+}

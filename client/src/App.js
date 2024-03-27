@@ -16,6 +16,8 @@ import DashDoctor from './pages/DashDoctor'
 import AppointmentsPatient from './pages/AppointmentsPatient'
 import CreateAppointment from './pages/CreateAppointment';
 import Docs from './pages/ListDocsP';
+ import AppointmentsDocs from './pages/DoctorAppointments'
+ import PatientsListDoc from './pages/PatientsListForDoctor';
 import './App.css';
 
 const App = () => {
@@ -37,6 +39,8 @@ const App = () => {
         <Route path='/appointments_list' element={<AppointmentsPatient />} />
         <Route path='/pick_appointment/:doctorId' element={<CreateAppointment />} />
         <Route path='/docs' element={<Docs />} />
+        <Route path='/appsDoc' element={<AppointmentsDocs />} />
+        <Route path="/mypatients" element={<PatientsListDoc />} />
 
 
         
