@@ -1,13 +1,9 @@
 .containerDoc{
     margin-top: 60px;
-    
     margin-left: 250px;
     padding: 30px;
     /* transition: all 0.3s ease; */
   }
-
-  
-
 .addDoc{
     background : #004D40;
     margin-bottom: 10px;
@@ -57,19 +53,16 @@
     background-color:rgb(145, 8, 8) ;
     margin-left: 10px;
   }
-
   .green {
     color :rgb(26, 106, 41);
     font-weight: bold;
     text-transform: uppercase; 
   }
-
   .red {
     color :rgb(145, 8, 8);
     font-weight: bold;
     text-transform: uppercase; 
   }
-
   .black {
     color: black;
     font-weight: bold;

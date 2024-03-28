@@ -72,13 +72,17 @@ if (existingAppointmentWithinThirtyMinutes) {
 }
 
 const patient = await Patient.findById(patientId);
+
 if (!patient) {
     return res.status(404).json({ message: 'Patient not found' });
+} 
+
+if(doctorObj.patients.includes(patientId)){
+    console.log('Patient already in patients array');
+
+}else {
+    doctorObj.patients.push(patient);
 }
-
-// 7. Store patient information in doctor's patients list
-doctorObj.patients.push(patient);
-
 // 8. Save the updated doctor object
 await doctorObj.save();
 
@@ -173,25 +177,6 @@ exports.deleteAnAppointment = async function(req, res) {
 }
 
 
-// exports.getPatientsByDoctor = async function(req, res) {
-//     try {
-//         const doctorId = req.params.doctorId;
-
-//         // Find appointments for the specified doctor
-//         const appointments = await Appointment.find({ doctor: doctorId });
-
-//         // Extract unique patient IDs from the appointments
-//         const patientIds = appointments.map(appointment => appointment.patient);
-
-//         // Fetch patient details based on the extracted patient IDs
-//         const patients = await Patient.find({ _id: { $in: patientIds } });
-
-//         res.json(patients);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Internal Server Error' });
-//     }
-// };
 
 
 exports.approveAppointment = async function (req, res) {

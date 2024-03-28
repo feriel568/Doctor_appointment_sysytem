@@ -7,6 +7,7 @@ const emailValidator = require('email-validator');
 
 const Doctor = mongoose.model('Doctor')
 const Admin = mongoose.model('Admin')
+const Patient = require('../models/patientModel');
 
 
 exports.addDoctor = async function(req,res){
@@ -255,3 +256,44 @@ exports.searchDocByName = async function(req, res) {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+
+exports.getListOfPatients = async function (req,res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const doctor= await Doctor.findById(doctorId);
+        const listPatientsIds = await doctor.patients;
+        const patients = await Promise.all(listPatientsIds.map(async patientId => {
+            const patient = await Patient.findById(patientId);
+            return patient;
+        }));
+        res.json(patients);
+    }catch (error){
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+exports.deletePatient = async function (req, res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const patientId = req.params.patientId;
+        const doctor = await Doctor.findById(doctorId);
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor not found' });
+        }
+        const patient = await Patient.findById(patientId);
+        if (!patient) {
+            return res.status(404).json({ message: 'Patient not found' });
+        }
+        if (doctor.patients.includes(patientId)) { 
+            doctor.patients.remove(patientId);
+            await doctor.save();
+            return res.json({ message: 'Patient deleted from doctor\'s list' });
+        } else {
+            return res.status(404).json({ message: 'Patient not found in doctor\'s list' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
