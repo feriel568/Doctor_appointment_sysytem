@@ -13,6 +13,11 @@ router.get('/doctor/totalAppointments/:doctorId' , appointmentController.getTota
 router.delete('/delete/:appointmentId' , appointmentController.deleteAnAppointment)
 router.patch('/doctor/approve/:appointmentId' , appointmentController.approveAppointment)
 router.patch('/doctor/refuse/:appointmentId' , appointmentController.refuseAppointment)
+router.get('/doctor/totalAppointmentsApproved/:doctorId' , appointmentController.getAppointmentsApprovedByDoctor)
+router.get('/doctor/totalAppointmentsRefused/:doctorId' , appointmentController.getAppointmentsRefusedByDoctor)
+router.get('/doctor/totalAppointmentsPending/:doctorId' , appointmentController.getAppointmentsPendingByDoctor)
+
+
 
 
 module.exports =  router;

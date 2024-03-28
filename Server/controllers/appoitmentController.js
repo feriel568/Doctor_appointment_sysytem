@@ -149,12 +149,45 @@ exports.getAppointmentsByDoctor= async function(req, res) {
     }
 }
 
+exports.getAppointmentsApprovedByDoctor = async function(req, res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const appointments = await Appointment.find({ doctor: doctorId, isApproved: true });
+        const totalAppointmentsApproved = appointments.length;
+        res.json(totalAppointmentsApproved);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+exports.getAppointmentsRefusedByDoctor = async function(req, res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const appointments = await Appointment.find({ doctor: doctorId, status: "refused" });
+        const totalAppointmentsRefused = appointments.length;
+        res.json(totalAppointmentsRefused);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+exports.getAppointmentsPendingByDoctor = async function(req, res) {
+    try {
+        const doctorId = req.params.doctorId;
+        const appointments = await Appointment.find({ doctor: doctorId, status: "pending" });
+        const totalAppointmentsPending = appointments.length;
+        res.json(totalAppointmentsPending);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 exports.getTotalAppointmentsForDoctor = async function(req, res) {
     const doctorId = req.params.doctorId;
 
     const apps = await Appointment.find({ doctor: doctorId})
     const totalAppPatient = apps.length;
-    res.json(totalAppPatient)
+    res.status(200).json(totalAppPatient)
 }
 
 exports.deleteAnAppointment = async function(req, res) {

@@ -297,3 +297,19 @@ exports.deletePatient = async function (req, res) {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+
+exports.getTotalNumberOfPatients = async function (req, res){
+    const doctorId = req.params.doctorId;
+
+    const doctor = await Doctor.findById(doctorId);
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor not found' });
+        }
+
+        const totalPatients = doctor.patients.length;
+        // console.log(totalPatients);
+        return res.json(totalPatients)
+
+
+}

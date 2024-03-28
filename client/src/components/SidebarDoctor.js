@@ -76,7 +76,7 @@ const SidebarDoctor = () => {
     
       <Link to="/dash_doc">
       <span className="icon"><FontAwesomeIcon icon={faDiceD6} /></span>
-      <span className="title" style={{ fontSize: '16px' }}>DashboardSoc</span>
+      <span className="title" style={{ fontSize: '16px' }}>Dashboard</span>
       </Link>
     
   </li>

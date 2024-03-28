@@ -1,7 +1,7 @@
 import SidebarDoctor from '../components/SidebarDoctor';
 import { useState , useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import '../Styles/appointmentsPatientList.css';
 import Axios from 'axios';
 
