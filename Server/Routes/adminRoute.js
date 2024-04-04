@@ -11,6 +11,7 @@
  router.put('/update/:id', adminController.updateAdmin)
  router.get('/allAdmins' , adminController.getAllAdmins)
  router.get('/totalAdmins' , adminController.getTotalNumberOfAdmins)
+ router.get('/infos/:id', adminController.getAdminById)
  
  module.exports = router;
 

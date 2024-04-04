@@ -45,8 +45,11 @@ const SidebarDoctor = () => {
               <ul>
                 <li>
                   <FontAwesomeIcon icon={faUser} onClick={toggleProfileDropdown} />
+                  
                   <div className={`profile_dd ${profileDropdownActive ? 'active' : ''}`}>
+                  <Link to="/profile_doctor">
                     <div className="dd_item">Profile</div>
+                    </Link>
                     <div className="dd_item">Change Password</div>
                     <div className="dd_item" onClick={handleLogOut}>Logout</div>
                   </div>
@@ -67,7 +70,7 @@ const SidebarDoctor = () => {
                 <FontAwesomeIcon icon={faUserCircle} />
               </div>
               <div className="profile_info">
-                <p>Welcome</p>
+                <p>Welcome doctor</p>
                 <p className="profile_name">{lastName} {firstName}</p>
               </div>
             </div>

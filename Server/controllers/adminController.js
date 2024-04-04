@@ -6,7 +6,8 @@ const nodemailer = require('nodemailer')
 const emailValidator = require('email-validator');
 
 const Admin = mongoose.model('Admin')
-
+const Patient = require('../models/patientModel');
+const Doctor = mongoose.model('Doctor')
 
 
 exports.register = async function(req, res) {
@@ -17,13 +18,15 @@ exports.register = async function(req, res) {
         }
 
         // const existingUser = await Admin.findOne({ email: req.body.email }).exec();
-         const existingUser = await Admin.findOne({ username: req.body.username }).exec();
+         const existingAdmin = await Admin.findOne({ username: req.body.username }).exec();
+         const existingPatient = await Patient.findOne({ username: req.body.username }).exec();
+         const existingDoctor = await Doctor.findOne({ username: req.body.username }).exec();
 
 
 
 
-        if (existingUser) {
-            return res.status(409).json({ message: 'User with this email already exists.' });
+        if (existingAdmin || existingPatient || existingDoctor) {
+            return res.status(409).json({ message: 'User with this username already exists.' });
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
          const verificationToken = uuid.v4();
@@ -142,6 +145,7 @@ exports.signIn = async function (req, res) {
             return res.status(401).json({ message: 'Authentication failed. Invalid password.' });
         }
         const userDetails = {
+            id : user.id,
             email: user.email,  
             role: user.role,
             lastName: user.lastName,
@@ -158,39 +162,63 @@ exports.signIn = async function (req, res) {
 };
 
 
-exports.getAdminById = async function(req,res){
-    try{
-        const adminId = req.params.id;
-        const admin = await Admin.findById(adminId).then(data=>res.send(data));
-    }catch(err){
-        console.log('Error while getting admin',err);
-    }
-}
-
-
-exports.updateAdmin = async function(req,res){
+exports.getAdminById = async function(req, res) {
     try {
         const adminId = req.params.id;
-        const updateData = req.body;
-        const updatedAdmin = await Admin.findByIdAndUpdate(
-            adminId,
-            updateData,
-            { new: true, useFindAndModify: false }
-            
-        );
-
-        if (!updatedAdmin) {
-            return res.status(404).json({ message: 'Admin not found' });
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
+            return res.status(404).json({ error: "Admin not found" });
         }
-
-        return res.json(updatedAdmin);
-
-
-    }catch(err){
-        console.error('Error updating admin:', err);
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return res.json(admin);
+    } catch (err) {
+        console.log('Error while getting admin', err);
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
+
+
+
+    exports.updateAdmin = async function(req, res) {
+        try {
+            const adminId = req.params.id;
+            const updateData = req.body;
+    
+            // Check if the username is being updated and if it already exists
+            if (updateData.username) {
+                const existingAdmin = await Admin.findOne({ username: updateData.username });
+                
+                const existingPatient = await Patient.findOne({ username: updateData.username }).exec();
+                const existingDoctor = await Doctor.findOne({ username: updateData.username }).exec();
+       
+       
+       
+       
+              
+
+                if ((existingAdmin && existingAdmin._id.toString() !== adminId) ||
+                (existingPatient && existingPatient._id.toString() !== adminId)||
+                (existingDoctor && existingDoctor._id.toString() !== adminId)) {
+                    return res.json({ message: 'Username is already taken' });
+                }
+            }
+    
+            const updatedAdmin = await Admin.findByIdAndUpdate(
+                adminId,
+                updateData,
+                { new: true, useFindAndModify: false }
+            );
+    
+            if (!updatedAdmin) {
+                return res.status(404).json({ message: 'Admin not found' });
+            }
+    
+            return res.json(updatedAdmin);
+        } catch (err) {
+            console.error('Error updating admin:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+
 
 exports.deleteAdmin = async function(req,res){
     try {

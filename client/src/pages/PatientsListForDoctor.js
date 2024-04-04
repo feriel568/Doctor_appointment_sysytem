@@ -10,6 +10,8 @@ const PatientsListDoc = () => {
    const [patients,setPatients] = useState([])
    const [isPopupVisible, setPopupVisible] = useState(false);
    const [patientToDelete, setPatientToDelete] = useState(null);
+   const [searchQuery, setSearchQuery] = useState(''); 
+
 
 
 
@@ -62,6 +64,13 @@ const closePopup = () => {
     setPatientToDelete(null);
   };
 
+  const handleSearch = async () => {
+    const storedUserDetails = JSON.parse(localStorage.getItem('user'));
+
+    const res = await Axios.get(`http://localhost:5000/doctor/searchPatients/${storedUserDetails.id}?name=${searchQuery}`)
+    setPatients(res.data);
+  }
+
   return (
     <div>
         <SidebarDoctor />
@@ -75,6 +84,15 @@ const closePopup = () => {
                     </div>
                 </div>
             )}
+             <div className="sr1">
+                    <input
+                        type="text"
+                        placeholder="Search patient by name"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button className="sBtn1" onClick={handleSearch}>Search</button>
+                </div>
 
             <table className="tableApp">
                 <thead>

@@ -1,0 +1,33 @@
+.profileContainer {
+    margin-left: 280px;
+    margin-top: 120px;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+.frow{
+    flex: 0 0 calc(33.33% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+.frow input{
+    width: 100%;
+  }
+.frow label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+.sBtn {
+    background-color: #004D40;
+  }
+  .updateBtn{
+    background-color: #004D40;
+    margin-left: 280px;
+    margin-top: 20px;
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+  }

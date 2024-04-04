@@ -6,6 +6,9 @@ const nodemailer = require('nodemailer')
 const emailValidator = require('email-validator');
 
 const Patient = require('../models/patientModel');
+const Doctor = mongoose.model('Doctor')
+
+const Admin = mongoose.model('Admin')
 
 
 exports.register = async function (req, res) {
@@ -16,13 +19,15 @@ exports.register = async function (req, res) {
         }
 
         // const existingUser = await Admin.findOne({ email: req.body.email }).exec();
+        const existingAdmin = await Admin.findOne({ username: req.body.username }).exec();
          const existingPatient = await Patient.findOne({ username: req.body.username }).exec();
+         const existingDoctor = await Doctor.findOne({ username: req.body.username }).exec();
 
 
 
 
-        if (existingPatient) {
-            return res.status(409).json({ message: 'Patient already exists.' });
+        if (existingAdmin || existingPatient || existingDoctor) {
+            return res.status(409).json({ message: 'User with this username already exists.' });
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
          const verificationToken = uuid.v4();
@@ -159,15 +164,29 @@ exports.signIn = async function (req, res) {
 
 
 
-exports.updatePatient = async function(req,res){
+exports.updatePatient = async function(req, res) {
     try {
         const patientId = req.params.id;
         const updateData = req.body;
-        const updatedPatient = await Admin.findByIdAndUpdate(
+
+        // Check if the username is being updated and if it already exists
+        if (updateData.username) {
+            const existingAdmin = await Admin.findOne({ username: updateData.username });
+            const existingPatient = await Patient.findOne({ username: updateData.username });
+            const existingDoctor = await Doctor.findOne({ username: updateData.username });
+
+            // Check if any existing user has the same username
+            if ((existingAdmin && existingAdmin._id.toString() !== patientId) ||
+                (existingPatient && existingPatient._id.toString() !== patientId) ||
+                (existingDoctor && existingDoctor._id.toString() !== patientId)) {
+                return res.json({ message: 'Username is already taken' });
+            }
+        }
+
+        const updatedPatient = await Patient.findByIdAndUpdate(
             patientId,
             updateData,
             { new: true, useFindAndModify: false }
-            
         );
 
         if (!updatedPatient) {
@@ -175,13 +194,12 @@ exports.updatePatient = async function(req,res){
         }
 
         return res.json(updatedPatient);
-
-
-    }catch(err){
+    } catch (err) {
         console.error('Error updating patient:', err);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
 
 exports.deletePatient = async function(req,res){
     try {
@@ -227,3 +245,16 @@ exports.getTotalNumberOfPatients = async function(req,res){
     
 }
 
+exports.getPatientById = async function(req, res) {
+    try {
+        const patientId = req.params.id;
+        const pt = await Patient.findById(patientId);
+        if (!pt) {
+            return res.status(404).json({ error: "Patient not found" });
+        }
+        return res.json(pt);
+    } catch (err) {
+        console.log('Error while getting Patient', err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}

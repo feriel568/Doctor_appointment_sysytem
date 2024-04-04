@@ -8,8 +8,6 @@ exports.createAppointment = async function (req, res) {
       const patientId = req.params.patientId;
       const { doctor, day, time, state } = req.body;
       console.log(day, time, state);
-
-      // 1. Check if the doctor exists
       const doctorObj = await Doctor.findById(doctor);
       if (!doctorObj) {
           return res.status(404).json({ message: 'Doctor not found' });
@@ -52,10 +50,8 @@ exports.createAppointment = async function (req, res) {
             return res.json({ message: 'The selected time is not available during the doctor\'s working hours.' });
         }
 
-
-
         const thirtyMinutesAfterSelectedTime = new Date(selectedTime);
-thirtyMinutesAfterSelectedTime.setMinutes(thirtyMinutesAfterSelectedTime.getMinutes() + 29);
+        thirtyMinutesAfterSelectedTime.setMinutes(thirtyMinutesAfterSelectedTime.getMinutes() + 29);
 
 const existingAppointmentWithinThirtyMinutes = await Appointment.findOne({
     doctor: doctorObj._id,
@@ -268,3 +264,5 @@ exports.refuseAppointment = async function (req, res) {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+

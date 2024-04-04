@@ -21,8 +21,9 @@ const CreateAppointment = () => {
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/doctor/getDoctor/${doctorId}`);
+        const response = await axios.get(`http://localhost:5000/doctor/infos/${doctorId}`);
         const doctorData = response.data;
+        console.log(doctorData)
         setFormData(doctorData);
       } catch (error) {
         console.error("Error fetching doctor details:", error);

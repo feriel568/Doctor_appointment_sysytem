@@ -46,7 +46,9 @@ const SidebarAdmin = () => {
                 <li>
                   <FontAwesomeIcon icon={faUser} onClick={toggleProfileDropdown} />
                   <div className={`profile_dd ${profileDropdownActive ? 'active' : ''}`}>
+                    <Link to="/profile_admin">
                     <div className="dd_item">Profile</div>
+                    </Link>
                     <div className="dd_item">Change Password</div>
                     <div className="dd_item" onClick={handleLogOut}>Logout</div>
                   </div>
@@ -67,7 +69,7 @@ const SidebarAdmin = () => {
                 <FontAwesomeIcon icon={faUserCircle} />
               </div>
               <div className="profile_info">
-                <p>Welcome</p>
+                <p>Welcome admin</p>
                 <p className="profile_name">{lastName} {firstName}</p>
               </div>
             </div>

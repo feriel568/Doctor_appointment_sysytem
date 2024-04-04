@@ -18,6 +18,9 @@ import CreateAppointment from './pages/CreateAppointment';
 import Docs from './pages/ListDocsP';
  import AppointmentsDocs from './pages/DoctorAppointments'
  import PatientsListDoc from './pages/PatientsListForDoctor';
+ import ProfileSettingsAdmin from './pages/ProfileSettingAdmin';
+ import ProfileSettingsPatient from './pages/ProfileSettingPatient';
+ import ProfileSettingsDoctor from './pages/ProfileSettingDoctor';
 import './App.css';
 
 const App = () => {
@@ -41,6 +44,12 @@ const App = () => {
         <Route path='/docs' element={<Docs />} />
         <Route path='/appsDoc' element={<AppointmentsDocs />} />
         <Route path="/mypatients" element={<PatientsListDoc />} />
+        <Route path="/profile_admin" element={<ProfileSettingsAdmin />} />
+        <Route path="/profile_patient" element={<ProfileSettingsPatient />} />
+        <Route path="/profile_doctor" element={<ProfileSettingsDoctor />} />
+
+
+
 
 
         

@@ -23,10 +23,16 @@ try{
     // if (existingAdmin) {
     //     return res.status(409).json({ message: 'User with this email already exists.' });
     // }
-    const existingDoctor = await Doctor.findOne({username:req.body.username}).exec();
-    if(existingDoctor){
-        return res.status(200).json({ message: 'Doctor already exists.' });
-    }
+    const existingAdmin = await Admin.findOne({ username: req.body.username }).exec();
+         const existingPatient = await Patient.findOne({ username: req.body.username }).exec();
+         const existingDoctor = await Doctor.findOne({ username: req.body.username }).exec();
+
+
+
+
+        if (existingAdmin || existingPatient || existingDoctor) {
+            return res.status(409).json({ message: 'User with this username already exists.' });
+        }
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const verificationToken = uuid.v4();
   
@@ -148,6 +154,24 @@ exports.updateDoctor = async function(req, res) {
     try {
         const doctorId = req.params.id;
         const updateData = req.body;
+        if (updateData.username) {
+            const existingAdmin = await Admin.findOne({ username: updateData.username });
+            
+            const existingPatient = await Patient.findOne({ username: updateData.username }).exec();
+            const existingDoctor = await Doctor.findOne({ username: updateData.username }).exec();
+   
+   
+   
+   
+          
+
+          
+            if ((existingAdmin && existingAdmin._id.toString() !== doctorId )||
+            (existingPatient && existingPatient._id.toString() !== doctorId)||
+            (existingDoctor && existingDoctor._id.toString() !== doctorId)) {
+                return res.json({ message: 'Username is already taken' });
+            }
+        }
 
         // Use findOneAndUpdate to find the document by ID and update it
         const updatedDoctor = await Doctor.findByIdAndUpdate(
@@ -216,26 +240,26 @@ exports.getTotalNumberOfDoctors = async function(req, res) {
     
 };
 
-exports.getDoctorById = async function(req,res){
-
+exports.getDoctorById = async function(req, res) {
     try {
-        const doctorId = req.params.id;
-        const doctor = await Doctor.findById(doctorId).then(data=>res.send(data));
-
-
-    }catch(err) {
-
-        console.log("Failed to fetch the doctor: " + err);
-
+        const docId = req.params.id;
+        const DC = await Doctor.findById(docId);
+        if (!DC) {
+            return res.status(404).json({ error: "Doctor not found" });
+        }
+        return res.json(DC);
+    } catch (err) {
+        console.log('Error while getting doctor', err);
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
 
 
 
 
-exports.searchDocByName = async function(req, res) {
+exports.searchDocByNameOrSpecialization = async function(req, res) {
     try {
-        const searchQuery = req.query.search; // Assuming you pass the search parameter in the query string
+        const searchQuery = req.query.search; 
 
         // Using a case-insensitive regular expression to search by firstName and lastName
         const doctors = await Doctor.find({
@@ -245,11 +269,9 @@ exports.searchDocByName = async function(req, res) {
                 { specialization: {$regex : new RegExp(searchQuery, 'i')}}
             ]
         });
-
         if (doctors.length === 0) {
             return res.status(404).json({ message: 'No doctors found with the given name.' });
         }
-
         return res.status(200).json(doctors);
     } catch (error) {
         console.error(error);
@@ -301,15 +323,36 @@ exports.deletePatient = async function (req, res) {
 
 exports.getTotalNumberOfPatients = async function (req, res){
     const doctorId = req.params.doctorId;
-
     const doctor = await Doctor.findById(doctorId);
         if (!doctor) {
             return res.status(404).json({ message: 'Doctor not found' });
         }
-
         const totalPatients = doctor.patients.length;
         // console.log(totalPatients);
         return res.json(totalPatients)
+}
 
+exports.searchPatientByName = async function (req, res) {
+    const doctorId = req.params.doctorId;
+    const doctor = await Doctor.findById(doctorId);
+    
+    if (!doctor) {
+        return res.status(404).json({ message: 'Doctor not found' });
+    }
 
+    const searchQuery = req.query.name; // Assuming the query parameter for the name is 'name'
+    
+    try {
+        const patients = await Patient.find({
+            firstName: { $regex: new RegExp(searchQuery, 'i') },
+            lastName: { $regex: new RegExp(searchQuery, 'i') },
+
+            _id: { $in: doctor.patients } // Only search among the doctor's patients
+        });
+        
+        return res.json(patients);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
 }
