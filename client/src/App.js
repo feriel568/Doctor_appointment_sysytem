@@ -21,6 +21,9 @@ import Docs from './pages/ListDocsP';
  import ProfileSettingsAdmin from './pages/ProfileSettingAdmin';
  import ProfileSettingsPatient from './pages/ProfileSettingPatient';
  import ProfileSettingsDoctor from './pages/ProfileSettingDoctor';
+ import ChangePasswordAdmin from './pages/ChangePassAdmin';
+ import ChangePasswordDoctor from './pages/ChangePasswordDoctor';
+ import ChangePasswordPatient from './pages/ChangePasswordPatient';
 import './App.css';
 
 const App = () => {
@@ -47,6 +50,10 @@ const App = () => {
         <Route path="/profile_admin" element={<ProfileSettingsAdmin />} />
         <Route path="/profile_patient" element={<ProfileSettingsPatient />} />
         <Route path="/profile_doctor" element={<ProfileSettingsDoctor />} />
+        <Route path="/change_password_admin" element={<ChangePasswordAdmin/>} />
+        <Route path="/change_password_doctor" element={<ChangePasswordDoctor/>} />
+        <Route path="/change_password_patient" element={<ChangePasswordPatient/>} />
+
 
 
 

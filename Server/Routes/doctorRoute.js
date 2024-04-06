@@ -15,5 +15,7 @@ router.get('/listPatients/:doctorId' , doctorController.getListOfPatients)
 router.delete('/deletePatient/:doctorId/:patientId' , doctorController.deletePatient)
 router.get('/getTotalNumberOfPatients/:doctorId', doctorController.getTotalNumberOfPatients)
 router.get('/searchPatients/:doctorId' , doctorController.searchPatientByName);
+router.put('/changePassword/:id', doctorController.changePassword);
+
 
 module.exports = router;

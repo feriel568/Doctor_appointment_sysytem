@@ -258,3 +258,40 @@ exports.getPatientById = async function(req, res) {
         return res.status(500).json({ error: "Internal server error" });
     }
 }
+
+
+exports.changePassword = async function(req, res) {
+
+    const patientId = req.params.id;
+    const {oldPassword, newPassword , confirmNewPassword} = req.body;
+
+    try {
+        const patient = await Patient.findById(patientId);
+        if(!patient) {
+          return  res.status(404).json({message : 'patient not found'})
+        }
+        // console.log(admin)
+
+        const passwordMatch = await bcrypt.compare(oldPassword,patient.password);
+      
+        if(!passwordMatch) {
+            return res.json({message : 'Old Password incorrect'})
+        }
+
+        if(newPassword !== confirmNewPassword) {
+            return res.json({message : 'New password and confirm new password do not match'})
+        }
+        const hashedPassword = await bcrypt.hash(newPassword , 10)
+        patient.password = hashedPassword
+        await patient.save()
+        return res.status(200).json({ message: 'Password updated successfully' });
+
+
+    }catch(err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal server error' });
+
+    }
+
+}
+

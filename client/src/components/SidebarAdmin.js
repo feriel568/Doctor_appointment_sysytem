@@ -49,7 +49,9 @@ const SidebarAdmin = () => {
                     <Link to="/profile_admin">
                     <div className="dd_item">Profile</div>
                     </Link>
+                    <Link to="/change_password_admin">
                     <div className="dd_item">Change Password</div>
+                    </Link>
                     <div className="dd_item" onClick={handleLogOut}>Logout</div>
                   </div>
                 </li>

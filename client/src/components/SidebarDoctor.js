@@ -50,7 +50,9 @@ const SidebarDoctor = () => {
                   <Link to="/profile_doctor">
                     <div className="dd_item">Profile</div>
                     </Link>
+                    <Link to="/change_password_doctor">
                     <div className="dd_item">Change Password</div>
+                    </Link>
                     <div className="dd_item" onClick={handleLogOut}>Logout</div>
                   </div>
                 </li>

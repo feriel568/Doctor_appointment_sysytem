@@ -265,4 +265,39 @@ exports.getTotalNumberOfAdmins = async function(req, res) {
    
 }
 
+exports.changePassword = async function(req, res) {
+
+    const adminId = req.params.id;
+    const {oldPassword, newPassword , confirmNewPassword} = req.body;
+
+    try {
+        const admin = await Admin.findById(adminId);
+        if(!admin) {
+          return  res.status(404).json({message : 'Admin not found'})
+        }
+        console.log(admin)
+
+        const passwordMatch = await bcrypt.compare(oldPassword,admin.password);
+      
+        if(!passwordMatch) {
+            return res.json({message : 'Old Password incorrect'})
+        }
+
+        if(newPassword !== confirmNewPassword) {
+            return res.json({message : 'New password and confirm new password do not match'})
+        }
+        const hashedPassword = await bcrypt.hash(newPassword , 10)
+        admin.password = hashedPassword
+        await admin.save()
+        return res.status(200).json({ message: 'Password updated successfully' });
+
+
+    }catch(err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal server error' });
+
+    }
+
+}
+
 

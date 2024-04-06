@@ -10,5 +10,7 @@ router.put('/update/:id', patientController.updatePatient);
 router.get('/allPatients' , patientController.getAllPatients);
 router.get('/totalPatients' , patientController.getTotalNumberOfPatients);
 router.get('/infos/:id', patientController.getPatientById)
+router.put('/changePassword/:id', patientController.changePassword);
+
 
 module.exports = router;

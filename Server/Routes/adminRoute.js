@@ -12,6 +12,7 @@
  router.get('/allAdmins' , adminController.getAllAdmins)
  router.get('/totalAdmins' , adminController.getTotalNumberOfAdmins)
  router.get('/infos/:id', adminController.getAdminById)
+ router.put('/changePassword/:id', adminController.changePassword)
  
  module.exports = router;
 
