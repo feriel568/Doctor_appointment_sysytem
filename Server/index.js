@@ -28,11 +28,13 @@ var doctorRoutes = require('./Routes/doctorRoute');
 var patientRoutes = require('./Routes/patientRoute');
 var appointmentRoute = require('./Routes/appointmentsRoute');
 var usersRoute = require('./Routes/usersRoute');
+var dossierRoute = require('./Routes/dossierMedicalRouter');
 app.use("/admin", adminRoutes)
 app.use("/doctor", doctorRoutes);
 app.use("/patient" , patientRoutes);
 app.use("/users", usersRoute);
 app.use("/appointment" ,appointmentRoute )
+app.use("/dossier" ,dossierRoute )
 //Running server
 app.listen(process.env.PORT ,()=>{
     console.log(`server is running on port ${process.env.PORT}`)
