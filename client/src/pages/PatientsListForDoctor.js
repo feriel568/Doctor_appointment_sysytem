@@ -1,8 +1,11 @@
 import SidebarDoctor from '../components/SidebarDoctor';
 import { useState , useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash ,faClipboard } from '@fortawesome/free-solid-svg-icons';
 import '../Styles/appointmentsPatientList.css';
+import { Link } from 'react-router-dom'
+
+
 import Axios from 'axios';
 
 const PatientsListDoc = () => {
@@ -11,6 +14,9 @@ const PatientsListDoc = () => {
    const [isPopupVisible, setPopupVisible] = useState(false);
    const [patientToDelete, setPatientToDelete] = useState(null);
    const [searchQuery, setSearchQuery] = useState(''); 
+
+   
+
 
 
 
@@ -31,6 +37,7 @@ const PatientsListDoc = () => {
         console.error('User details not found in local storage.');
     }
 }, []); 
+
 
 const handleDeletePatient = async () => {
     try {
@@ -115,8 +122,14 @@ const closePopup = () => {
                                 <td>{patient.phone}</td>
                                 <td>{patient.address}</td>
                                 <td className="actionsApp">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;
                                     <FontAwesomeIcon icon={faTrash} className="deleteIconApp" onClick={() => deletePatient(patient._id)} />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                  
+                                            <Link to={`/createReport/${patient._id}`}>
+                                                <FontAwesomeIcon icon={faClipboard} />
+                                            </Link>
+                                       
                                 </td>
                             </tr>
                         ))

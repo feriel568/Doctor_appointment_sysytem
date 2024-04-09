@@ -24,6 +24,7 @@ import Docs from './pages/ListDocsP';
  import ChangePasswordAdmin from './pages/ChangePassAdmin';
  import ChangePasswordDoctor from './pages/ChangePasswordDoctor';
  import ChangePasswordPatient from './pages/ChangePasswordPatient';
+ import CreateDossierMedical from './pages/CreateDossierMedical';
 import './App.css';
 
 const App = () => {
@@ -53,6 +54,8 @@ const App = () => {
         <Route path="/change_password_admin" element={<ChangePasswordAdmin/>} />
         <Route path="/change_password_doctor" element={<ChangePasswordDoctor/>} />
         <Route path="/change_password_patient" element={<ChangePasswordPatient/>} />
+        <Route path="/createReport/:patientId" element={<CreateDossierMedical />} />
+
 
 
 
