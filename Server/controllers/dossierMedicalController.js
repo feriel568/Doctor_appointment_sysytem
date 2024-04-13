@@ -20,6 +20,13 @@ try{
         return res.status(404).json('Patient not found');
     }
 
+    const existingDossier = await MedicalDossier.findOne({ patient: patientId, doctor: doctorId });
+
+    if (existingDossier) {
+    
+        return res.status(200).json('Has a medical report');
+    }
+
     const {notes, meds}=req.body;
 
      const dossier = new MedicalDossier({
@@ -38,34 +45,44 @@ try{
 }
 }
 
-exports.checkPatientDossier = async function(req, res) {
-    const doctorId = req.params.doctorId;
+
+exports.updateDossier = async function (req, res) {
     const patientId = req.params.patientId;
+    const updatedData = req.body;
 
     try {
-        const doctor = await Doctor.findById(doctorId);
-        const patient = await Patient.findById(patientId);
-
-        if (!doctor) {
-            return res.status(404).json('Doctor not found');
+        // Retrieve the dossier ID based on the patient ID
+        const dossier = await MedicalDossier.findOne({ patient: patientId });
+        if (!dossier) {
+            return res.status(404).json({ message: 'Dossier not found' });
         }
 
-        if (!patient) {
-            return res.status(404).json('Patient not found');
-        }
+        // Update the dossier with the retrieved dossier ID
+        const updatedDossier = await MedicalDossier.findByIdAndUpdate(
+            dossier._id,
+            updatedData,
+            { new: true, useFindAndModify: false }
+        );
 
-        
-        const existingDossier = await MedicalDossier.findOne({ patient: patientId, doctor: doctorId });
-
-        if (existingDossier) {
-        
-            return res.status(200).json('Has a medical report');
-        } else {
-           
-            return res.status(200).json('No medical report');
-        }
+        return res.json(updatedDossier);
     } catch (err) {
-        console.log(err);
-        return res.status(500).json('Internal Server Error');
+        console.error('Error updating dossier:', err);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+exports.getDossierByPatientId = async function (req, res) {
+    const ptId = req.params.patientId;
+    try{
+            const dossier = await MedicalDossier.findOne({patient: ptId});
+            if(!dossier){
+                return res.status(404).json({ message: 'Dossier not found' });
+            }
+
+            return res.json(dossier);
+    }catch(err){
+        console.error('Error getting dossier:', err);
+
     }
 }

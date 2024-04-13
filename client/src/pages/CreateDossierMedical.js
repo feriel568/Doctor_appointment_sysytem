@@ -22,36 +22,39 @@ const CreateDossierMedical = () => {
     const [meds, setMeds] = useState([]);
     const [isPopupVisible, setPopupVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
-    useEffect(() => {
-        const fetchPatient = async () => {
-          try {
-            const response = await axios.get(`http://localhost:5000/patient/infos/${patientId}`);
-            const patient = response.data;
-            console.log(patient)
-            setFormDataPatient(patient);
-          } catch (error) {
-            console.error("Error fetching patient details:", error);
-          }
-        };
-        fetchPatient();
-      }, [patientId]);
-
-      
   useEffect(() => {
-    const fetchDoctorData = async () => {
-        const storedUserDetails = JSON.parse(localStorage.getItem('user'));
-      try {
-        const response = await axios.get(`http://localhost:5000/doctor/infos/${storedUserDetails.id}`);
-        const doctorData = response.data;
-        console.log(doctorData)
-        setFormDataDoctor(doctorData);
-      } catch (error) {
-        console.error("Error fetching doctor details:", error);
-      }
+    const fetchData = async () => {
+        try {
+            // Fetch patient details
+            const responsePatient = await axios.get(`http://localhost:5000/patient/infos/${patientId}`);
+            const patientData = responsePatient.data;
+            setFormDataPatient(patientData);
+
+            // Fetch doctor details
+            const storedUserDetails = JSON.parse(localStorage.getItem('user'));
+            const responseDoctor = await axios.get(`http://localhost:5000/doctor/infos/${storedUserDetails.id}`);
+            const doctorData = responseDoctor.data;
+            setFormDataDoctor(doctorData);
+
+            // Fetch existing dossier if exists
+            const responseDossier = await axios.get(`http://localhost:5000/dossier/get/${patientId}`);
+            const dossierData = responseDossier.data;
+            if (dossierData) {
+                setNotes(dossierData.notes);
+                setMeds(dossierData.meds);
+                setIsEditMode(true);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
-    fetchDoctorData();
-  }, []);
+
+    fetchData();
+}, [patientId]);
+      
+
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -83,17 +86,25 @@ const CreateDossierMedical = () => {
         setMeds(newMeds);
     };
 
-    const handleCreateDossierMedical = async () => {
+    const handleCreateOrUpdateDossierMedical = async () => {
         const storedUserDetails = JSON.parse(localStorage.getItem('user'));
         try {
-            const response = await axios.post(`http://localhost:5000/dossier/create/${storedUserDetails.id}/${patientId}`, {
-                notes: notes,
-                meds: meds
-            });
-            console.log(response.data); 
-            setSuccessMessage(response.data);
+            if (isEditMode) {
+                // Update dossier
+                await axios.put(`http://localhost:5000/dossier/update/${patientId}`, {
+                    notes: notes,
+                    meds: meds
+                });
+                setSuccessMessage("Dossier updated successfully");
+            } else {
+                // Create new dossier
+                await axios.post(`http://localhost:5000/dossier/create/${storedUserDetails.id}/${patientId}`, {
+                    notes: notes,
+                    meds: meds
+                });
+                setSuccessMessage("Dossier created successfully");
+            }
             setPopupVisible(true);
-
         } catch (err) {
             console.log(err);
         }
@@ -106,17 +117,17 @@ const CreateDossierMedical = () => {
       };
     
 
-    return (
+      return (
         <div>
             <SidebarDoctor />
             {isPopupVisible && (
-          <div className="popup1">
-            <div className="popup-content1">
-              <p>{successMessage}</p>
-              <button onClick={closePopup}>Close</button>
-            </div>
-          </div>
-        )}
+                <div className="popup1">
+                    <div className="popup-content1">
+                        <p>{successMessage}</p>
+                        <button onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            )}
             <div className="dossierCn">
                 <div className="patientInput">
                     <label className='lb'>Patient</label>
@@ -124,6 +135,7 @@ const CreateDossierMedical = () => {
                         type="text"
                         onChange={handleChange}
                         value={`Mr/Mrs. ${formDataPatient.firstName} ${formDataPatient.lastName}`}
+                        disabled // Disable input fields
                     />
                 </div>
 
@@ -133,6 +145,7 @@ const CreateDossierMedical = () => {
                         type="text"
                         onChange={handleChange1}
                         value={`Mr/Mrs. ${formDataDoctor.firstName} ${formDataDoctor.lastName}`}
+                        disabled // Disable input fields
                     />
                 </div>
 
@@ -145,11 +158,11 @@ const CreateDossierMedical = () => {
                                 value={note}
                                 onChange={(event) => handleNoteChange(index, event)}
                                 style={{ marginBottom: '10px' }}
+                                // Disable input fields if not in edit mode
                             />
                         </div>
                     ))}
-                   
-                    <FontAwesomeIcon icon={faAdd}    onClick={handleAddNote}/>
+                      <FontAwesomeIcon icon={faAdd} onClick={handleAddNote} />
                 </div>
 
                 <div className="medsInput">
@@ -161,18 +174,17 @@ const CreateDossierMedical = () => {
                                 value={med}
                                 onChange={(event) => handleMedChange(index, event)}
                                 style={{ marginBottom: '10px' }}
+                                // Disable input fields if not in edit mode
                             />
                         </div>
                     ))}
-                    <FontAwesomeIcon icon={faAdd} onClick={handleAddMed}/>
+                    <FontAwesomeIcon icon={faAdd} onClick={handleAddMed} />
                 </div>
 
-                <button type="submit" className='btnApp' onClick={handleCreateDossierMedical} >
-              Create
-            </button> 
+                <button type="submit" className='btnApp' onClick={handleCreateOrUpdateDossierMedical} >
+                    {isEditMode ? 'Update' : 'Create'} {/* Change button text based on mode */}
+                </button>
             </div>
-
-            
         </div>
     );
 }

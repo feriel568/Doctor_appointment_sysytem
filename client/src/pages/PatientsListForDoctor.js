@@ -27,7 +27,6 @@ const PatientsListDoc = () => {
         // Fetch the list of patients for the connected doctor using Axios
         Axios.get(`http://localhost:5000/doctor/listPatients/${storedUserDetails.id}`)
             .then(response => {
-                console.log(response.data);
                 setPatients(response.data);
             })
             .catch(error => {
@@ -37,6 +36,8 @@ const PatientsListDoc = () => {
         console.error('User details not found in local storage.');
     }
 }, []); 
+
+
 
 
 const handleDeletePatient = async () => {
@@ -77,6 +78,9 @@ const closePopup = () => {
     const res = await Axios.get(`http://localhost:5000/doctor/searchPatients/${storedUserDetails.id}?name=${searchQuery}`)
     setPatients(res.data);
   }
+
+ 
+
 
   return (
     <div>
@@ -127,8 +131,7 @@ const closePopup = () => {
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                   
                                             <Link to={`/createReport/${patient._id}`}>
-                                                <FontAwesomeIcon icon={faClipboard} />
-                                            </Link>
+                                            <FontAwesomeIcon icon={faClipboard} /></Link>
                                        
                                 </td>
                             </tr>
