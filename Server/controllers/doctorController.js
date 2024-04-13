@@ -8,6 +8,7 @@ const emailValidator = require('email-validator');
 const Doctor = mongoose.model('Doctor')
 const Admin = mongoose.model('Admin')
 const Patient = require('../models/patientModel');
+const Appointment = require('../models/appointmentModel');
 
 
 exports.addDoctor = async function(req,res){
@@ -193,7 +194,6 @@ exports.updateDoctor = async function(req, res) {
 
 
 
-
 exports.deleteDoctor = async function(req, res) {
     try {
         const doctorId = req.params.id;
@@ -203,16 +203,38 @@ exports.deleteDoctor = async function(req, res) {
             return res.status(400).json({ message: 'Invalid doctor ID' });
         }
 
-        // Use findOneAndDelete to find the document by ID and delete it
-        const deletedDoctor = await Doctor.findOneAndDelete({
-            _id: new mongoose.Types.ObjectId(doctorId)
-        });
+        // Use a transaction to ensure data consistency
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-        if (!deletedDoctor) {
-            return res.status(404).json({ message: 'Doctor not found' });
+        try {
+            // Delete appointments associated with the doctor
+            await Appointment.deleteMany({ doctor: doctorId });
+
+            // Use findOneAndDelete to find the doctor document by ID and delete it
+            const deletedDoctor = await Doctor.findOneAndDelete(
+                { _id: new mongoose.Types.ObjectId(doctorId) },
+                { session: session }
+            );
+
+            if (!deletedDoctor) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(404).json({ message: 'Doctor not found' });
+            }
+
+            // Commit the transaction
+            await session.commitTransaction();
+            session.endSession();
+
+            return res.json({ message: 'Doctor and associated appointments deleted successfully' });
+        } catch (err) {
+            // Rollback the transaction if any error occurs
+            await session.abortTransaction();
+            session.endSession();
+            console.error('Error deleting doctor:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
         }
-
-        return res.json({ message: 'Doctor deleted successfully' });
     } catch (err) {
         console.error('Error deleting doctor:', err);
         return res.status(500).json({ message: 'Internal Server Error' });

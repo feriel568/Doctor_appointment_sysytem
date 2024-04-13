@@ -10,6 +10,8 @@ const Doctor = mongoose.model('Doctor')
 
 const Admin = mongoose.model('Admin')
 
+const Appointment = require('../models/appointmentModel');
+
 
 exports.register = async function (req, res) {
     try {
@@ -199,9 +201,7 @@ exports.updatePatient = async function(req, res) {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
-
-
-exports.deletePatient = async function(req,res){
+exports.deletePatient = async function(req, res) {
     try {
         const patientId = req.params.id;
 
@@ -210,21 +210,53 @@ exports.deletePatient = async function(req,res){
             return res.status(400).json({ message: 'Invalid patient ID' });
         }
 
-        // Use findOneAndDelete to find the document by ID and delete it
-        const deletedPatient = await Patient.findOneAndDelete({
-            _id: new mongoose.Types.ObjectId(patientId)
-        });
+        // Use a transaction to ensure data consistency
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-        if (!deletedPatient) {
-            return res.status(404).json({ message: 'Patient not found' });
+        try {
+            // Find all doctors who have the patient in their list of patients
+            const doctorsToUpdate = await Doctor.find({ patients: patientId });
+
+            // Update each doctor's patients list to remove the deleted patient
+            await Promise.all(doctorsToUpdate.map(async (doctor) => {
+                doctor.patients.pull(patientId);
+                await doctor.save({ session: session });
+            }));
+
+            // Delete appointments associated with the patient
+            await Appointment.deleteMany({ patient: patientId });
+
+            // Use findOneAndDelete to find the patient document by ID and delete it
+            const deletedPatient = await Patient.findOneAndDelete(
+                { _id: new mongoose.Types.ObjectId(patientId) },
+                { session: session }
+            );
+
+            if (!deletedPatient) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(404).json({ message: 'Patient not found' });
+            }
+
+            // Commit the transaction
+            await session.commitTransaction();
+            session.endSession();
+
+            return res.json({ message: 'Patient and associated appointments deleted successfully' });
+        } catch (err) {
+            // Rollback the transaction if any error occurs
+            await session.abortTransaction();
+            session.endSession();
+            console.error('Error deleting patient:', err);
+            return res.status(500).json({ message: 'Internal Server Error' });
         }
-
-        return res.json({ message: 'Patient deleted successfully' });
     } catch (err) {
         console.error('Error deleting patient:', err);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
-}
+};
+
 
 
 exports.getAllPatients = async function(req,res){

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 import "../Styles/profileSettingsAdmin.css";
 
 const ProfileSettingsAdmin = () => {
+  const navigate = useNavigate()
+
   const [adminData, setAdminData] = useState({
     firstName: "",
     lastName: "",
@@ -16,7 +20,8 @@ const ProfileSettingsAdmin = () => {
 
   const [updateMessage,setUpdateMessage] = useState(null);
   const [isPopupVisible,setPopupVisible] = useState(false); 
-
+  const [confirmMessage,setConfirmMessage] = useState(null);
+  const [isPopupVisible1,setPopupVisible1] = useState(false); 
   useEffect(() => {
     const fetchAdminData = async () => {
         try {
@@ -61,6 +66,32 @@ const closePopup = () =>{
     setUpdateMessage(null);
 }
 
+
+const closePopup1 = () =>{
+  setPopupVisible1(false);
+  setConfirmMessage(null);
+}
+
+
+const confirmDelete = async ()=> {
+  setPopupVisible1(true);
+  setConfirmMessage('Are you sure you want to delete your account?');
+}
+
+
+
+const handleDeleteAccount = async ()=> {
+  try {
+    const storedUserDetails = JSON.parse(localStorage.getItem('user'));
+    const response = await axios.delete(`http://localhost:5000/admin/delete/${storedUserDetails.id}`);
+    console.log("Account deleted",response);
+    navigate('/login')
+
+  }catch (error) {
+    console.log("Error deleting patient" , error)
+  }
+}
+
 const handleChange = (event) => {
     const { name, value } = event.target;
     setAdminData({ ...adminData, [name]: value });
@@ -79,6 +110,19 @@ const handleChange = (event) => {
             </div>
           </div>
         )}
+
+{isPopupVisible1 && (
+            <div className="popup-overlay">
+            <div className="popup-content">
+              <p>{confirmMessage}</p>
+              <button onClick={handleDeleteAccount}>Yes</button>
+
+              <button onClick={closePopup1} className="noBtn">No</button>
+            </div>
+          </div>
+        )}
+                <div className="boxPS">
+
         <div className="frow">
           <label htmlFor="input1">First name:</label>
           <input
@@ -142,6 +186,8 @@ const handleChange = (event) => {
         </div>
         <div className="frow">
           <button className="sBtn" onClick={handleUpdate}>Submit</button>
+          <button className="delAccount" onClick={confirmDelete}>Delete Account</button>
+        </div>
         </div>
       </div>
     </div>
