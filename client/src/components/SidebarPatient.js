@@ -98,6 +98,12 @@ const SidebarAdmin = () => {
       <span className="icon"><FontAwesomeIcon icon={faUserMd}  /></span>
       <span className="title" style={{ fontSize: '16px' }}>Appointments</span>
     </Link>
+
+     
+    <Link to="/my_medical_report">
+      <span className="icon"><FontAwesomeIcon icon={faUserMd}  /></span>
+      <span className="title" style={{ fontSize: '16px' }}>Medical report</span>
+    </Link>
     
   </li>
 </ul>

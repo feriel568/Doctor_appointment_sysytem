@@ -71,11 +71,53 @@ exports.updateDossier = async function (req, res) {
     }
 }
 
-
+// un dossier medicale associé à un patient 
 exports.getDossierByPatientId = async function (req, res) {
     const ptId = req.params.patientId;
     try{
             const dossier = await MedicalDossier.findOne({patient: ptId});
+            if(!dossier){
+                return res.status(404).json({ message: 'Dossier not found' });
+            }
+
+            return res.json(dossier);
+    }catch(err){
+        console.error('Error getting dossier:', err);
+
+    }
+}
+//Listes des dossiers médicaux d'un patient
+exports.getAllDossierByPatientId = async function (req, res) {
+
+    const ptId = req.params.patientId;
+    try{
+            const dossiers = await MedicalDossier.find({patient: ptId}).populate('doctor', 'firstName lastName'); ;
+            return res.json(dossiers);
+    }catch(err){
+        console.error('Error getting all dossiers:', err);
+
+    } 
+ }
+
+ //Listes des dossiers médicaux d'un docteur
+ exports.getAllDossierByDoctorId = async function (req, res) {
+
+    const dcId = req.params.docId;
+    try{
+            const dossiers = await MedicalDossier.find({doctor: dcId});
+            return res.json(dossiers);
+    }catch(err){
+        console.error('Error getting all dossiers:', err);
+
+    } 
+ }
+
+ // GET un dossier medicale par don ID
+exports.getDossierById = async function (req, res) {
+    const dossierId = req.params.dossierId;
+    console.log('id dossier' , dossierId);
+    try{
+            const dossier = await MedicalDossier.findById(dossierId).populate("doctor" , "firstName lastName");
             if(!dossier){
                 return res.status(404).json({ message: 'Dossier not found' });
             }

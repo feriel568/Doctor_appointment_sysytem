@@ -5,5 +5,9 @@ const dossierMedicalController = require('../controllers/dossierMedicalControlle
 router.post('/create/:doctorId/:patientId', dossierMedicalController.createDossier)
 router.put('/update/:patientId' , dossierMedicalController.updateDossier)
 router.get('/get/:patientId' , dossierMedicalController.getDossierByPatientId) 
+router.get('/getAll/:patientId' , dossierMedicalController.getAllDossierByPatientId)
+router.get('/getAll/:docId' , dossierMedicalController.getAllDossierByDoctorId)
+router.get('/getDossier/:dossierId' , dossierMedicalController.getDossierById)
+
 
 module.exports = router

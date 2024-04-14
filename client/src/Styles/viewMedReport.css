@@ -1,0 +1,39 @@
+.Cn_med{
+    margin-left: 280px;
+    margin-top: 120px;
+    
+   
+}
+
+.cn_med_box {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    overflow: hidden; 
+    width: 60%;
+    
+    margin: 10px 20px 20px 20px;
+    height: auto; 
+    padding: 30px 20px;
+    background: #fff;
+}
+
+.cn_med_box h3 {
+    font-weight: bold;
+}
+
+.notes-list li {
+   
+    font-size: 16px; 
+    margin-bottom: 8px; 
+}
+
+.meds-list li {
+   
+    font-size: 16px; 
+    margin-bottom: 8px; 
+}
+
+ul li {
+    list-style-type: circle;
+}
