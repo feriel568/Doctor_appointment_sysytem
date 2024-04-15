@@ -8,6 +8,7 @@ router.get('/get/:patientId' , dossierMedicalController.getDossierByPatientId)
 router.get('/getAll/:patientId' , dossierMedicalController.getAllDossierByPatientId)
 router.get('/getAll/:docId' , dossierMedicalController.getAllDossierByDoctorId)
 router.get('/getDossier/:dossierId' , dossierMedicalController.getDossierById)
+router.delete('/delete/:doctorId/:patientId' , dossierMedicalController.deleteDossierByDoctor)
 
 
 module.exports = router

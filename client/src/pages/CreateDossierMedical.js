@@ -23,6 +23,9 @@ const CreateDossierMedical = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isDeletePopup, setDeletePopupVisible] = useState(false);
+  const [deleteMsg, setDeleteMdg] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +112,25 @@ const CreateDossierMedical = () => {
             console.log(err);
         }
     }
+const confirmDelete = async () => {
+
+    setDeletePopupVisible(true); 
+    setDeleteMdg('Are you sure you want to delete this medical report?');
+
+}
+    const handleDeleteMedicalReport = async () => {
+        const storedUserDetails = JSON.parse(localStorage.getItem('user'));
+        try {
+            const response = await axios.delete(`http://localhost:5000/dossier/delete/${storedUserDetails.id}/${patientId}`)
+            console.log(response.data);
+            navigate('/mypatients');
+
+
+        }catch (err) {
+            console.log(err);
+
+        }
+    }
 
     const closePopup = () => {
         setPopupVisible(false);
@@ -116,6 +138,11 @@ const CreateDossierMedical = () => {
         navigate('/mypatients');
       };
     
+
+      const closePopup2 = () => {
+        setDeletePopupVisible(false);
+        setDeleteMdg(null);
+      };
 
       return (
         <div>
@@ -125,6 +152,17 @@ const CreateDossierMedical = () => {
                     <div className="popup-content1">
                         <p>{successMessage}</p>
                         <button onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            )}
+
+{isDeletePopup && (
+                <div className="popup1">
+                    <div className="popup-content1">
+                        <p>{deleteMsg}</p>
+                        <button onClick={handleDeleteMedicalReport}>Yes</button>
+                        <button onClick={closePopup2} className='redBtn'>No</button>
+
                     </div>
                 </div>
             )}
@@ -184,6 +222,7 @@ const CreateDossierMedical = () => {
                 <button type="submit" className='btnApp' onClick={handleCreateOrUpdateDossierMedical} >
                     {isEditMode ? 'Update' : 'Create'} {/* Change button text based on mode */}
                 </button>
+                <button className="dleDM" onClick={confirmDelete}>Delete</button>
             </div>
         </div>
     );

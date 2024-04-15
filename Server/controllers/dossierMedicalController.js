@@ -128,3 +128,22 @@ exports.getDossierById = async function (req, res) {
 
     }
 }
+
+
+// Delete un dossier par son ID
+exports.deleteDossierByDoctor = async function(req, res) {
+    const doctorId = req.params.doctorId;
+    const patientId = req.params.patientId;
+    try {
+        const dossier = await MedicalDossier.findOne({ patient: patientId, doctor: doctorId });
+        if (!dossier) {
+            return res.status(404).send({ message: 'Dossier not found' });
+        }
+
+        await MedicalDossier.deleteOne({ _id: dossier._id }); // Using deleteOne to delete the dossier
+        return res.status(200).send({ message: 'Dossier deleted successfully' });
+
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+}

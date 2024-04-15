@@ -10,3 +10,19 @@
   
 }
 
+.dleDM{
+  background: rgb(142, 14, 14);
+  margin-left: 10px;
+  padding: 10px 20px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  border: none;
+}
+
+.popup-content1 .redBtn {
+  background: rgb(142, 14, 14);
+  margin-left: 10px;
+
+
+}
